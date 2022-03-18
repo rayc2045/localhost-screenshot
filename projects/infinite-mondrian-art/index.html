@@ -39,6 +39,7 @@
       class="block screenshot"
       :style="block.style"
       @click="generateBlock(); current++;"
+      v-show="blockIdx === current"
     >
       <li
         v-for="(color, colorIdx) in block.colors" :key="colorIdx"
