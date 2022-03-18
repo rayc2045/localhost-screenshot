@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Primary Meta Tags -->
+    <title>HTML Color Names</title>
+    <meta name="title" content="HTML Color Names">
+    <meta name="description" content="Use HTML reserved colors by name, Hex color code or RGB value.">
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/39514595?s=32">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://color-names.netlify.app/">
+    <meta property="og:title" content="HTML Color Names">
+    <meta property="og:description" content="Use HTML reserved colors by name, Hex color code or RGB value.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/rayc2045/html-reserved-colors/main/src/assets/images/cover.png">
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://color-names.netlify.app/">
+    <meta property="twitter:title" content="HTML Color Names">
+    <meta property="twitter:description" content="Use HTML reserved colors by name, Hex color code or RGB value.">
+    <meta property="twitter:image" content="https://raw.githubusercontent.com/rayc2045/html-reserved-colors/main/src/assets/images/cover.png">
+    <!-- Font Rubik -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700&display=swap" rel="stylesheet">
+    <!-- Style -->
+    <link rel="stylesheet" href="/src/assets/styles/style.css">
+  </head>
+  <body
+    class="grid-center"
+    v-cloak
+    @mounted="init"
+    @mousedown.once="audioCatch([copySound], 3)"
+    @dblclick="scrollTo(0, 0)"
+    @contextmenu.prevent
+    @selectstart.prevent
+    @dragstart.prevent
+  >
+    <ul :class="['cards', { animate: !isLoading }]">
+      <div
+        class="screenshot grid-center" style="width: 1200px; height: 1200px;"
+        v-for="color in colors" :key="color.name">
+        <li class="card" style="background-color: #eee;">
+          <div
+            class="color-display pointer"
+            :style="`background-color: ${color.hex};`"
+            @click="copyColorCode(color, 'name')"
+          ></div>
+          <h1
+            class="pointer"
+            :style="`${
+              color.name.length >= 19 ? 'font-size: 1.5em; margin: 0.5em;' :
+              color.name.length >= 17 ? 'font-size: 1.5em; margin: 0.7em;' :
+              color.name.length >= 15 ? 'font-size: 1.6em; margin: 0.7em;' :
+              ''
+            }`"
+            @click="copyColorCode(color, 'name')"
+          >
+            {{ color.name }}
+          </h1>
+          <div class="hex-section pointer" @click="copyColorCode(color, 'hex')">
+            <div class="title uppercase">HEX CODE</div>
+            <div class="hex-value">{{ color.hex }}</div>
+          </div>
+          <div class="rgb-section pointer" @click="copyColorCode(color, 'rgb')">
+            <div class="title uppercase">RGB VALUE</div>
+            <div class="rgb-value">{{ color.rgb }}</div>
+          </div>
+        </li>
+      </div>
+    </ul>
+
+    <script type="module">
+      import { createApp } from 'https://unpkg.com/petite-vue?module';
+
+      createApp({
+        isLoading: true,
+        colors: [],
+        copySound: new Audio('/src/assets/audio/modern-technology-select.wav'),
+        async init() {
+          const { colors } = this.getParamsByUrl(window.location.href);
+          await this.loadColorData(colors ? colors.split(' ') : []);
+          this.isLoading = false;
+          // console.log(`${this.colors.length} colors, ${this.getRepeatedItem(this.colors).length} repeated`);
+        },
+        getParamsByUrl(url) {
+          const urlSearch = url.split('?')[1];
+          const urlSearchParams = new URLSearchParams(urlSearch);
+          return Object.fromEntries(urlSearchParams.entries());
+        },
+        async loadColorData(queryColors = []) {
+          const res = await fetch('/src/api/colors.json');
+          const data = await res.json();
+          if (!queryColors.length) return this.colors = data;
+          this.colors = data.filter(color =>
+            queryColors.includes(this.getMinifiedColorName(color.name))
+          );
+          if (!this.colors.length) this.colors = data;
+        },
+        getRepeatedItem(arr) {
+          const set = new Set();
+          return arr.filter(item =>
+            set.has(JSON.stringify(item))
+              ? true
+              : (set.add(JSON.stringify(item)), false)
+          );
+        },
+        copyColorCode(color, value) {
+          this.playAudio(this.copySound);
+          if (value === 'name')
+            return navigator.clipboard.writeText(
+              this.getMinifiedColorName(color.name)
+            );
+          navigator.clipboard.writeText(color[value]);
+        },
+        getMinifiedColorName(colorName) {
+          return colorName.split(' ').map(text => text.toLowerCase()).join('');
+        },
+        playAudio(audio, volume = 1) {
+          audio.currentTime = 0;
+          audio.volume = volume;
+          audio.play();
+        },
+        audioCatch(audios, minute = 1) {
+          audios.forEach(audio => this.playAudio(audio, 0));
+          setTimeout(() => this.audioCatch(audios, minute), minute * 60_000);
+        }
+      }).mount();
+    </script>
+  </body>
+</html>

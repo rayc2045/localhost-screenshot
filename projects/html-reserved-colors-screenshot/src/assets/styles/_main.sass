@@ -1,0 +1,77 @@
+header
+  width: 95%
+  line-height: 1.625em
+  // opacity: 0
+  // &.animate
+  //   animation: headerSlideIn 0.75s, headerFadeIn 1s
+  //   animation-fill-mode: forwards
+  h1
+    margin-top: 0.5em
+    font-size: 2.625em
+    font-weight: 500
+  p
+    margin: 0
+    font-size: 1.3125em
+    letter-spacing: 0.03125em
+    color: gray
+  +iPad
+    line-height: 2.6875rem
+    h1
+      margin: 0
+      font-size: 0.875em
+      letter-spacing: 0.1em
+      text-transform: uppercase
+      color: silver
+    p
+      font-size: 2.125em
+      color: $black
+  +desktop
+    font-size: 0.834em
+    line-height: 2.6em
+
+.cards
+  display: flex
+  justify-content: center
+  flex-wrap: wrap
+  // opacity: 0
+  font-size: 39px // TODO: Test
+  // &.animate
+  //   animation: cardsSlideIn 1s, cardsFadeIn 1s
+  //   animation-fill-mode: forwards
+  +desktop
+    font-size: 0.84em
+
+.card
+  margin: 2em
+  +cardSize(15.9375em)
+  +neumorphicShadow
+  border-radius: 2em
+  text-align: center
+  .color-display
+    margin-top: 1.875em
+    +round(8.5em)
+    +neumorphicShadow
+    display: inline-block
+  h1
+    font-size: 1.75em
+  .hex-section, .rgb-section
+    margin-bottom: 1em
+    font-size: 0.875em
+  .title
+    font-size: 0.875em
+    color: silver
+  .hex-value, .rgb-value
+    font-size: 1.25em
+
+.grid-center
+  display: grid
+  place-items: center
+
+.uppercase
+  text-transform: uppercase
+
+.pointer
+  cursor: url('/src/assets/images/colorize.svg') 3 20, pointer
+
+.hide
+  opacity: 0
