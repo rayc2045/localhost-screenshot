@@ -1,7 +1,6 @@
 import { createApp } from './petite-vue.js';
 
 createApp({
-  // isLoading: true,
   colors: [
     'red',
     'yellow',
@@ -13,8 +12,10 @@ createApp({
   blocks: [],
   current: 0,
   init() {
-    this.generateBlock();
-    // setTimeout(() => (this.isLoading = false), 2000);
+    for (let i = 0; i < 1000; i++) {
+      this.generateBlock();
+    }
+    console.log(this.generateBlock());
   },
   getRandomNum(min, max) {
     min = Math.ceil(min);

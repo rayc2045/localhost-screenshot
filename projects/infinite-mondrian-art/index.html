@@ -38,8 +38,6 @@
       v-for="(block, blockIdx) in blocks" :key="blockIdx"
       class="block screenshot"
       :style="block.style"
-      @click="generateBlock(); current++;"
-      v-show="blockIdx === current"
     >
       <li
         v-for="(color, colorIdx) in block.colors" :key="colorIdx"
@@ -47,6 +45,6 @@
       ></li>
     </ul>
 
-    <script src="./src/assets/scripts/script.js" type="module"></script>
+    <script src="./src/assets/scripts/script2.js" type="module"></script>
   </body>
 </html>
