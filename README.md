@@ -2,7 +2,7 @@
 
 ### Usage
 
-Run live server, and then: 
+Run [live server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer), then
 
     pnpm i
     node index.js
