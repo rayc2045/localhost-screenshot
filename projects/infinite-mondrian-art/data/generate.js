@@ -73,6 +73,7 @@ function arraysEqual(a, b) {
 
 const path = require('path');
 const fs = require('fs');
+
 fs.writeFileSync(
   `${__dirname}/blocks.json`,
   JSON.stringify(blocks)

@@ -1,4 +1,4 @@
-import { createApp } from './petite-vue.js';
+import { createApp } from '../../../../shared/petite-vue.js';
 
 createApp({
   colors: [

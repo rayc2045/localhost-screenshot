@@ -1,4 +1,4 @@
-import { createApp } from './petite-vue.js';
+import { createApp } from '../../../../shared/petite-vue.js'
 
 createApp({
   blocks: [
@@ -14777,7 +14777,7 @@ createApp({
   index: 0,
   init() {
     const { index } = this.getParamsByUrl(window.location.href);
-    if (index) this.index = index;
+    this.index = index || 0;
     this.blocks = [this.blocks[this.index]];
     console.log(this.index);
   },
